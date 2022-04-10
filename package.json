@@ -1,0 +1,32 @@
+{
+  "name": "logseq-plugin-style-manager",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vue-tsc --noEmit && vite build && cp icon.png package.json LICENSE dist/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.2.0",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.23",
+    "typescript": "^4.5.5",
+    "vite": "^2.8.3",
+    "vite-plugin-logseq": "^1.1.0",
+    "vue-tsc": "^0.31.4"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.1-alpha.34",
+    "vue": "^3.2.31"
+  },
+  "logseq": {
+    "id": "logseq-plugin-style-manager",
+    "title": "Style Manager",
+    "icon": "./icon.png"
+  }
+}
