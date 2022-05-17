@@ -1,5 +1,5 @@
 {
-  "name": "logseq-plugin-style-manager",
+  "name": "logseq-plugin-global-custom-css",
   "version": "0.0.1",
   "description": "",
   "main": "index.html",
@@ -25,8 +25,8 @@
     "vue": "^3.2.33"
   },
   "logseq": {
-    "id": "logseq-plugin-style-manager",
-    "title": "Style Manager",
+    "id": "logseq-plugin-global-custom-css",
+    "title": "Global Custom CSS",
     "icon": "./icon.png"
   }
 }
