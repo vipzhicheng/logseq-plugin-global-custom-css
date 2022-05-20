@@ -1,11 +1,7 @@
-<script setup lang="ts">
-const msg = "hello world";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="text-green-500 text-5xl font-bold">
-    {{ msg }}
-  </div>
+  <Editor />
 </template>
 
 <style></style>
