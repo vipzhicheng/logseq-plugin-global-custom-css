@@ -8,5 +8,7 @@ export const useEditorStore = defineStore("editor", {
     open() {
       this.visible = true;
     },
+
+    init(id) {},
   },
 });
