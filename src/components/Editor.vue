@@ -2,12 +2,11 @@
 import "@logseq/libs";
 import { useEditorStore } from "@/stores/editor";
 
-let show = true;
-// const editorStore = useEditorStore();
+const editorStore = useEditorStore();
 
-// onMounted(async () => {
-//   editorStore.init("editor");
-// });
+onMounted(async () => {
+  await editorStore.init("editor");
+});
 </script>
 <template>
   <div>
@@ -15,12 +14,12 @@ let show = true;
       <div class="flex-1">
         <textarea id="editor"></textarea>
       </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="show = false">Cancel</el-button>
-          <el-button type="primary" @click="show = false">Confirm</el-button>
-        </span>
-      </template>
     </el-dialog>
   </div>
 </template>
+<style>
+.CodeMirror {
+  width: 100%;
+  height: 100%;
+}
+</style>

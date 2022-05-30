@@ -22,17 +22,17 @@ const main = async () => {
   app.mount("#app");
 
   logseq.provideModel(createModel());
-  logseq.Editor.registerSlashCommand("Test", triggerBlockModal);
-  logseq.Editor.registerBlockContextMenuItem("Test", triggerBlockModal);
+  // logseq.Editor.registerSlashCommand("Test", triggerBlockModal);
+  // logseq.Editor.registerBlockContextMenuItem("Test", triggerBlockModal);
 
-  logseq.App.registerUIItem("pagebar", {
-    key: "logseq-plugin-starter-vite-tailwindcss-pagebar",
-    template: `
-      <a data-on-click="openModal" class="button" title="Open modal" style="font-size: 18px">
-        P
-      </a>
-    `,
-  });
+  // logseq.App.registerUIItem("pagebar", {
+  //   key: "logseq-plugin-starter-vite-tailwindcss-pagebar",
+  //   template: `
+  //     <a data-on-click="openModal" class="button" title="Open modal" style="font-size: 18px">
+  //       P
+  //     </a>
+  //   `,
+  // });
 
   logseq.App.registerUIItem("toolbar", {
     key: "logseq-plugin-starter-vite-tailwindcss-toolbar",
