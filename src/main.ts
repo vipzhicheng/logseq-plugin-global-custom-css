@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import { createApp } from "vue";
 import App from "./App.vue";
 import "./style.css";
+import { useEditorStore } from "@/stores/editor";
 
 function createModel() {
   return {
@@ -21,18 +22,28 @@ const main = async () => {
   app.use(createPinia());
   app.mount("#app");
 
-  logseq.provideModel(createModel());
-  // logseq.Editor.registerSlashCommand("Test", triggerBlockModal);
-  // logseq.Editor.registerBlockContextMenuItem("Test", triggerBlockModal);
+  // logseq.provideModel(createModel());
 
-  // logseq.App.registerUIItem("pagebar", {
-  //   key: "logseq-plugin-starter-vite-tailwindcss-pagebar",
-  //   template: `
-  //     <a data-on-click="openModal" class="button" title="Open modal" style="font-size: 18px">
-  //       P
-  //     </a>
-  //   `,
-  // });
+  logseq.on("ui:visible:changed", (visible) => {
+    if (!visible) {
+      return;
+    }
+
+    const editorStore = useEditorStore();
+
+    editorStore.show();
+  });
+  logseq.Editor.registerSlashCommand("Test", triggerBlockModal);
+  logseq.Editor.registerBlockContextMenuItem("Test", triggerBlockModal);
+
+  logseq.App.registerUIItem("pagebar", {
+    key: "logseq-plugin-starter-vite-tailwindcss-pagebar",
+    template: `
+      <a data-on-click="openModal" class="button" title="Open modal" style="font-size: 18px">
+        P
+      </a>
+    `,
+  });
 
   logseq.App.registerUIItem("toolbar", {
     key: "logseq-plugin-starter-vite-tailwindcss-toolbar",
@@ -48,4 +59,4 @@ const main = async () => {
   });
 };
 
-logseq.ready().then(main).catch(console.error);
+logseq.ready(createModel(), main).catch(console.error);

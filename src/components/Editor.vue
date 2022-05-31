@@ -9,12 +9,8 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div>
-    <el-dialog v-model="show" title="Tips" width="30%" draggable>
-      <div class="flex-1">
-        <textarea id="editor"></textarea>
-      </div>
-    </el-dialog>
+  <div class="flex-1 h-96">
+    <textarea id="editor"></textarea>
   </div>
 </template>
 <style>

@@ -5,31 +5,35 @@ import * as CodeMirror from "codemirror";
 
 import "codemirror/lib/codemirror.css";
 
-import "codemirror/addon/dialog/dialog.css";
+// import "codemirror/addon/dialog/dialog.css";
 // import "codemirror/theme/material.css";
-import "codemirror/theme/solarized.css";
+import "codemirror/theme/monokai.css";
 
 // import "@/theme/base2tone-sea-dark.css";
 
 // import "codemirror/mode/javascript/javascript";
 // import "codemirror/mode/htmlmixed/htmlmixed";
 // import "codemirror/mode/coffeescript/coffeescript";
-import "codemirror/mode/markdown/markdown";
+import "codemirror/mode/css/css";
+import "codemirror/addon/hint/show-hint.css";
+import "codemirror/addon/display/fullscreen.css";
 
-import "codemirror/addon/dialog/dialog.js";
-import "codemirror/addon/search/searchcursor.js";
+// import "codemirror/addon/dialog/dialog.js";
+// import "codemirror/addon/search/searchcursor.js";
 import "codemirror/addon/edit/matchbrackets.js";
-import "codemirror/addon/edit/continuelist";
+// import "codemirror/addon/edit/continuelist";
 
-import "codemirror/keymap/vim.js";
+import "codemirror/addon/hint/show-hint.js";
+import "codemirror/addon/hint/css-hint.js";
+import "codemirror/addon/display/fullscreen.js";
 
 export const useEditorStore = defineStore("editor", {
   state: () => ({
-    visible: false,
+    visible: true,
     cm: null as EditorFromTextArea | null,
   }),
   actions: {
-    open() {
+    show() {
       this.visible = true;
     },
 
@@ -37,37 +41,24 @@ export const useEditorStore = defineStore("editor", {
       const editor = document.getElementById(selector) as HTMLTextAreaElement;
       editor.value = "";
 
-      // @ts-ignore
-      CodeMirror.commands.save = this.save;
-
-      // @ts-ignore
-      CodeMirror.Vim.defineEx("wq", "wq", this.saveAndQuit);
-
-      // @ts-ignore
-      CodeMirror.Vim.defineEx("quit", "q", this.quitWithoutSaving);
-
-      // @ts-ignore
-      CodeMirror.Vim.defineEx("help", "h", this.help);
-
       const cm = CodeMirror.fromTextArea(editor as HTMLTextAreaElement, {
-        mode: "markdown",
-        theme: "solarized",
+        mode: "css",
+        theme: "monokai",
         // // @ts-ignore
         // minimap: true,
         lineNumbers: true,
-        lineWrapping: true,
+        lineWrapping: false,
         // autofocus: true,
         indentUnit: 2,
         tabSize: 2,
         indentWithTabs: true,
         showCursorWhenSelecting: true,
-        keyMap: "vim",
       });
 
       cm.addKeyMap({
-        "Ctrl-]": () => {
-          // @ts-ignore
-          CodeMirror.Vim.exitInsertMode(cm);
+        "Ctrl-Space": "autocomplete",
+        F11: function (cm) {
+          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
         },
       });
 
@@ -78,12 +69,22 @@ export const useEditorStore = defineStore("editor", {
           const spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
           cm.replaceSelection(spaces);
         },
-        Enter: "newlineAndIndentContinueMarkdownList",
       });
 
       cm.setOption("extraKeys", keyMapDefault);
 
       this.cm = cm;
+
+      logseq.on("ui:visible:changed", (visible) => {
+        if (!visible) {
+          return;
+        }
+        if (cm) {
+          cm.refresh();
+          cm.focus();
+        }
+      });
+
       return cm;
     },
   },
