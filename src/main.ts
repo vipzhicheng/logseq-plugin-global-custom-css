@@ -18,6 +18,15 @@ async function triggerBlockModal() {
 }
 
 const main = async () => {
+  const settings = logseq.settings;
+  if (settings.styles && settings.styles.global) {
+    const style = "/* global custom css */\n" + settings.styles.global;
+    logseq.provideStyle({
+      key: "global",
+      style,
+    });
+  }
+
   const app = createApp(App);
   app.use(createPinia());
   app.mount("#app");

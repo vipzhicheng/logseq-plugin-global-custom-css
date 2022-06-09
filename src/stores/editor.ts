@@ -27,6 +27,8 @@ import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/css-hint.js";
 import "codemirror/addon/display/fullscreen.js";
 
+import beautify from "simply-beautiful";
+
 export const useEditorStore = defineStore("editor", {
   state: () => ({
     visible: true,
@@ -37,9 +39,36 @@ export const useEditorStore = defineStore("editor", {
       this.visible = true;
     },
 
+    format() {
+      if (this.cm as EditorFromTextArea) {
+        let style = this.cm.getValue();
+        var options = {
+          indent_size: 2,
+        };
+        let formated = beautify.css(style, options);
+        this.cm.setValue(formated);
+      }
+    },
+
+    submit() {
+      if (this.cm as EditorFromTextArea) {
+        let style = this.cm.getValue();
+
+        logseq.updateSettings({
+          styles: {
+            global: style,
+          },
+        });
+        style = "/* global custom css */\n" + style;
+        logseq.provideStyle({
+          key: "global",
+          style,
+        });
+      }
+    },
+
     async init(selector: string) {
       const editor = document.getElementById(selector) as HTMLTextAreaElement;
-      editor.value = "";
 
       const cm = CodeMirror.fromTextArea(editor as HTMLTextAreaElement, {
         mode: "css",
@@ -82,6 +111,11 @@ export const useEditorStore = defineStore("editor", {
         if (cm) {
           cm.refresh();
           cm.focus();
+          const settings = logseq.settings;
+          console.log(settings);
+          if (settings.styles && settings.styles.global) {
+            cm.setValue(settings.styles.global);
+          }
         }
       });
 

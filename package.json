@@ -29,6 +29,7 @@
     "codemirror": "^5.65.4",
     "element-plus": "^2.2.2",
     "pinia": "^2.0.14",
+    "simply-beautiful": "^0.2.13",
     "vue": "^3.2.36"
   },
   "logseq": {

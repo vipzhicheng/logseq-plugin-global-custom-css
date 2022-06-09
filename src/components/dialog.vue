@@ -11,6 +11,10 @@ const editorStore = useEditorStore();
     draggable
     :append-to-body="true"
   >
+    <template #header>
+      <el-button @click="editorStore.submit">Submit</el-button>
+      <el-button @click="editorStore.format">Format</el-button>
+    </template>
     <Editor />
   </el-dialog>
 </template>
