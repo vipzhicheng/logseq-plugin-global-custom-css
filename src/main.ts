@@ -20,7 +20,7 @@ async function triggerBlockModal() {
 const main = async () => {
   const settings = logseq.settings;
   if (settings.styles && settings.styles.global) {
-    const style = "/* global custom css */\n" + settings.styles.global;
+    const style = "/* Global Custom CSS */\n" + settings.styles.global;
     logseq.provideStyle({
       key: "global",
       style,

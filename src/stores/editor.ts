@@ -21,7 +21,7 @@ import "codemirror/addon/display/fullscreen.css";
 // import "codemirror/addon/dialog/dialog.js";
 // import "codemirror/addon/search/searchcursor.js";
 import "codemirror/addon/edit/matchbrackets.js";
-// import "codemirror/addon/edit/continuelist";
+import "codemirror/addon/edit/closebrackets";
 
 import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/css-hint.js";
@@ -50,7 +50,7 @@ export const useEditorStore = defineStore("editor", {
       }
     },
 
-    submit() {
+    apply() {
       if (this.cm as EditorFromTextArea) {
         let style = this.cm.getValue();
 
@@ -59,7 +59,7 @@ export const useEditorStore = defineStore("editor", {
             global: style,
           },
         });
-        style = "/* global custom css */\n" + style;
+        style = "/* Global Custom CSS */\n" + style;
         logseq.provideStyle({
           key: "global",
           style,
@@ -82,6 +82,7 @@ export const useEditorStore = defineStore("editor", {
         tabSize: 2,
         indentWithTabs: true,
         showCursorWhenSelecting: true,
+        autoCloseBrackets: true,
       });
 
       cm.addKeyMap({
