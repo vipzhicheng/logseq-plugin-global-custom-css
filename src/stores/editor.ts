@@ -21,10 +21,15 @@ import "codemirror/addon/display/fullscreen.css";
 // import "codemirror/addon/dialog/dialog.js";
 // import "codemirror/addon/search/searchcursor.js";
 import "codemirror/addon/edit/matchbrackets.js";
+
+// For auto close brackets
 import "codemirror/addon/edit/closebrackets";
 
+// For auto complete
 import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/css-hint.js";
+
+// For fullscreen
 import "codemirror/addon/display/fullscreen.js";
 
 import beautify from "simply-beautiful";
