@@ -7,6 +7,7 @@ specifiers:
   '@vitejs/plugin-vue': ^2.3.3
   autoprefixer: ^10.4.7
   codemirror: ^5.65.4
+  codemirror-colorpicker: ^1.9.80
   element-plus: ^2.2.2
   pinia: ^2.0.14
   postcss: ^8.4.14
@@ -23,6 +24,7 @@ specifiers:
 dependencies:
   '@logseq/libs': 0.0.6
   codemirror: 5.65.4
+  codemirror-colorpicker: 1.9.80_codemirror@5.65.4
   element-plus: 2.2.2_vue@3.2.36
   pinia: 2.0.14_typescript@4.7.2+vue@3.2.36
   simply-beautiful: 0.2.13
@@ -430,6 +432,14 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /codemirror-colorpicker/1.9.80_codemirror@5.65.4:
+    resolution: {integrity: sha512-7lGqNxf5haBJXLnVR1ynPiPkN2d1Whm0jdy8Z9QsSOhRWVyK2C2ihgm1dX4DCks57ht/jKMdpL9lYv+zAphxWQ==}
+    peerDependencies:
+      codemirror: ^5.48.0
+    dependencies:
+      codemirror: 5.65.4
+    dev: false
 
   /codemirror/5.65.4:
     resolution: {integrity: sha512-tytrSm5Rh52b6j36cbDXN+FHwHCl9aroY4BrDZB2NFFL3Wjfq9nuYVLFFhaOYOczKAg3JXTr8BuT8LcE5QY4Iw==}

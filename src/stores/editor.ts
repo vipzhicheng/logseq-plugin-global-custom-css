@@ -32,6 +32,10 @@ import "codemirror/addon/hint/css-hint.js";
 // For fullscreen
 import "codemirror/addon/display/fullscreen.js";
 
+// Color picker
+import "codemirror-colorpicker/dist/codemirror-colorpicker.css";
+import "codemirror-colorpicker";
+
 import beautify from "simply-beautiful";
 
 export const useEditorStore = defineStore("editor", {
@@ -88,6 +92,18 @@ export const useEditorStore = defineStore("editor", {
         indentWithTabs: true,
         showCursorWhenSelecting: true,
         autoCloseBrackets: true,
+
+        // @ts-ignore
+        colorpicker: {
+          mode: true,
+        },
+        extraKeys: {
+          // when ctrl+k  keys pressed, color picker is able to open.
+          // @ts-ignore
+          "Ctrl-K": function (cm, event) {
+            cm.state.colorpicker.popup_color_picker();
+          },
+        },
       });
 
       cm.addKeyMap({
