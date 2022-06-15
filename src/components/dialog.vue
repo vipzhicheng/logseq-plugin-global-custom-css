@@ -14,6 +14,9 @@ const editorStore = useEditorStore();
     <template #header>
       <el-button @click="editorStore.apply" type="primary">Apply</el-button>
       <el-button @click="editorStore.format">Format</el-button>
+      <el-button @click="editorStore.saveToGithubGist"
+        >Save to Github Gist</el-button
+      >
     </template>
     <Editor />
   </el-dialog>

@@ -48,6 +48,53 @@ export const useEditorStore = defineStore("editor", {
       this.visible = true;
     },
 
+    async saveToGithubGist() {
+      if (this.cm as EditorFromTextArea) {
+        let style = this.cm.getValue();
+
+        const data = {
+          description: "Logseq Global Custom CSS",
+          public: false,
+          files: {
+            "logseq_global_custom.css": {
+              content: style,
+            },
+          },
+        };
+
+        await fetch("https://api.github.com/gists", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "token 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",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+
+        // const octokit = new Octokit({
+        //   auth: "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",
+        // });
+        // await octokit.rest.gists.create({
+        //   request: {
+        //     fetch,
+        //   },
+        //   description: "Logseq Global Custom CSS",
+        //   public: false,
+        //   files: {
+        //     "global_custom.css": {
+        //       content: style,
+        //     },
+        //   },
+        // });
+      }
+    },
+
     format() {
       if (this.cm as EditorFromTextArea) {
         let style = this.cm.getValue();
@@ -95,13 +142,10 @@ export const useEditorStore = defineStore("editor", {
 
         // @ts-ignore
         colorpicker: {
-          mode: true,
-        },
-        extraKeys: {
-          // when ctrl+k  keys pressed, color picker is able to open.
-          // @ts-ignore
-          "Ctrl-K": function (cm, event) {
-            cm.state.colorpicker.popup_color_picker();
+          mode: "edit",
+          onChange: function (color) {
+            // Called when a color is selected.
+            console.log(color);
           },
         },
       });
@@ -120,6 +164,10 @@ export const useEditorStore = defineStore("editor", {
           const spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
           cm.replaceSelection(spaces);
         },
+        // when ctrl+k  keys pressed, color picker is able to open.
+        "Ctrl-K": (cm: CodeMirror.Editor) => {
+          console.log(cm);
+        },
       });
 
       cm.setOption("extraKeys", keyMapDefault);
@@ -134,7 +182,6 @@ export const useEditorStore = defineStore("editor", {
           cm.refresh();
           cm.focus();
           const settings = logseq.settings;
-          console.log(settings);
           if (settings.styles && settings.styles.global) {
             cm.setValue(settings.styles.global);
           }
