@@ -1,3 +1,4 @@
+import "@logseq/libs";
 import { defineStore } from "pinia";
 import { EditorFromTextArea } from "codemirror";
 
@@ -48,13 +49,51 @@ export const useEditorStore = defineStore("editor", {
       this.visible = true;
     },
 
+    async clear() {
+      if (this.cm as EditorFromTextArea) {
+        let style = "";
+        this.cm.setValue(style);
+        this.apply();
+      }
+    },
+
+    async loadFromGithubGist() {
+      if (this.cm as EditorFromTextArea) {
+        const gist_id = logseq.settings.gist_id;
+        const token = logseq.settings.personal_access_token;
+
+        if (!gist_id || !token) {
+          alert("gist_id or personal access token not config");
+        }
+        await fetch(
+          `https://gist.github.com/vipzhicheng/${gist_id}/raw?${Math.random()}`,
+          {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            // headers: {
+            //   "Content-Type": "application/json",
+            //   Authorization: `token ${token}`,
+            //   // 'Content-Type': 'application/x-www-form-urlencoded',
+            // },
+            redirect: "follow", // manual, *follow, error
+            referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          }
+        ).then(async (response) => {
+          const body = await response.text();
+          this.cm.setValue(body);
+          this.apply();
+        });
+      }
+    },
+
     async saveToGithubGist() {
       if (this.cm as EditorFromTextArea) {
         let style = this.cm.getValue();
 
         const data = {
           description: "Logseq Global Custom CSS",
-          public: false,
           files: {
             "logseq_global_custom.css": {
               content: style,
@@ -62,14 +101,20 @@ export const useEditorStore = defineStore("editor", {
           },
         };
 
-        await fetch("https://api.github.com/gists", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+        const gist_id = logseq.settings.gist_id;
+        const token = logseq.settings.personal_access_token;
+
+        if (!gist_id || !token) {
+          alert("gist_id or personal access token not config");
+        }
+        await fetch(`https://api.github.com/gists/${gist_id}`, {
+          method: "PATCH", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
           credentials: "same-origin", // include, *same-origin, omit
           headers: {
             "Content-Type": "application/json",
-            Authorization: "token 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",
+            Authorization: `token ${token}`,
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           redirect: "follow", // manual, *follow, error
@@ -77,21 +122,7 @@ export const useEditorStore = defineStore("editor", {
           body: JSON.stringify(data), // body data type must match "Content-Type" header
         });
 
-        // const octokit = new Octokit({
-        //   auth: "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",
-        // });
-        // await octokit.rest.gists.create({
-        //   request: {
-        //     fetch,
-        //   },
-        //   description: "Logseq Global Custom CSS",
-        //   public: false,
-        //   files: {
-        //     "global_custom.css": {
-        //       content: style,
-        //     },
-        //   },
-        // });
+        alert("Save successfully!");
       }
     },
 
@@ -126,29 +157,31 @@ export const useEditorStore = defineStore("editor", {
     async init(selector: string) {
       const editor = document.getElementById(selector) as HTMLTextAreaElement;
 
-      const cm = CodeMirror.fromTextArea(editor as HTMLTextAreaElement, {
-        mode: "css",
-        theme: "monokai",
-        // // @ts-ignore
-        // minimap: true,
-        lineNumbers: true,
-        lineWrapping: false,
-        // autofocus: true,
-        indentUnit: 2,
-        tabSize: 2,
-        indentWithTabs: true,
-        showCursorWhenSelecting: true,
-        autoCloseBrackets: true,
+      const cm = markRaw(
+        CodeMirror.fromTextArea(editor as HTMLTextAreaElement, {
+          mode: "css",
+          theme: "monokai",
+          // // @ts-ignore
+          // minimap: true,
+          lineNumbers: true,
+          lineWrapping: false,
+          // autofocus: true,
+          indentUnit: 2,
+          tabSize: 2,
+          indentWithTabs: true,
+          showCursorWhenSelecting: true,
+          autoCloseBrackets: true,
 
-        // @ts-ignore
-        colorpicker: {
-          mode: "edit",
-          onChange: function (color) {
-            // Called when a color is selected.
-            console.log(color);
+          // @ts-ignore
+          colorpicker: {
+            mode: "edit",
+            onChange: function (color) {
+              // Called when a color is selected.
+              console.log(color);
+            },
           },
-        },
-      });
+        })
+      );
 
       cm.addKeyMap({
         "Ctrl-Space": "autocomplete",
