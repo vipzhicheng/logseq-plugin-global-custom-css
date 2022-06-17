@@ -1,7 +1,7 @@
 {
   "name": "logseq-plugin-global-custom-css",
   "version": "0.0.1",
-  "description": "",
+  "description": "A plugin for Logseq themer",
   "main": "index.html",
   "scripts": {
     "dev": "vite dev",
