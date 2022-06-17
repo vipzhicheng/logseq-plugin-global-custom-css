@@ -28,7 +28,6 @@
     "@logseq/libs": "^0.0.6",
     "@octokit/rest": "^18.12.0",
     "codemirror": "^5.65.4",
-    "codemirror-colorpicker": "^1.9.80",
     "element-plus": "^2.2.2",
     "pinia": "^2.0.14",
     "simply-beautiful": "^0.2.13",

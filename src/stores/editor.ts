@@ -1,4 +1,5 @@
 import "@logseq/libs";
+import beautify from "simply-beautiful";
 import { defineStore } from "pinia";
 import { EditorFromTextArea } from "codemirror";
 
@@ -6,43 +7,28 @@ import * as CodeMirror from "codemirror";
 
 import "codemirror/lib/codemirror.css";
 
-// import "codemirror/addon/dialog/dialog.css";
-// import "codemirror/theme/material.css";
 import "codemirror/theme/monokai.css";
 
-// import "@/theme/base2tone-sea-dark.css";
-
-// import "codemirror/mode/javascript/javascript";
-// import "codemirror/mode/htmlmixed/htmlmixed";
-// import "codemirror/mode/coffeescript/coffeescript";
 import "codemirror/mode/css/css";
-import "codemirror/addon/hint/show-hint.css";
-import "codemirror/addon/display/fullscreen.css";
 
-// import "codemirror/addon/dialog/dialog.js";
-// import "codemirror/addon/search/searchcursor.js";
+// For auto close brackets and match brackets
 import "codemirror/addon/edit/matchbrackets.js";
-
-// For auto close brackets
-import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/closebrackets.js";
 
 // For auto complete
+import "codemirror/addon/hint/show-hint.css";
 import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/css-hint.js";
 
 // For fullscreen
+import "codemirror/addon/display/fullscreen.css";
 import "codemirror/addon/display/fullscreen.js";
-
-// Color picker
-import "codemirror-colorpicker/dist/codemirror-colorpicker.css";
-import "codemirror-colorpicker";
-
-import beautify from "simply-beautiful";
 
 export const useEditorStore = defineStore("editor", {
   state: () => ({
     visible: true,
     cm: null as EditorFromTextArea | null,
+    timer: null,
   }),
   actions: {
     show() {
@@ -171,15 +157,6 @@ export const useEditorStore = defineStore("editor", {
           indentWithTabs: true,
           showCursorWhenSelecting: true,
           autoCloseBrackets: true,
-
-          // @ts-ignore
-          colorpicker: {
-            mode: "edit",
-            onChange: function (color) {
-              // Called when a color is selected.
-              console.log(color);
-            },
-          },
         })
       );
 
@@ -197,13 +174,19 @@ export const useEditorStore = defineStore("editor", {
           const spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
           cm.replaceSelection(spaces);
         },
-        // when ctrl+k  keys pressed, color picker is able to open.
-        "Ctrl-K": (cm: CodeMirror.Editor) => {
-          console.log(cm);
-        },
       });
 
       cm.setOption("extraKeys", keyMapDefault);
+
+      // Auto apply
+      cm.on("change", (cm, change) => {
+        if (this.timer) {
+          clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(() => {
+          this.apply();
+        }, 300);
+      });
 
       this.cm = cm;
 

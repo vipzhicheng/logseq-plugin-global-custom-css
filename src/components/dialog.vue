@@ -15,15 +15,14 @@ const editorStore = useEditorStore();
     :modal="false"
   >
     <template #header>
-      <el-button @click="editorStore.apply" type="primary">Apply</el-button>
-      <el-button @click="editorStore.format">Format</el-button>
-      <el-button @click="editorStore.saveToGithubGist"
-        >Save to Github Gist</el-button
+      <el-button title="Format" @click="editorStore.format">Format</el-button>
+      <el-button title="Save" @click="editorStore.saveToGithubGist"
+        >Save</el-button
       >
-      <el-button @click="editorStore.loadFromGithubGist"
-        >Load from Github Gist</el-button
+      <el-button title="Load" @click="editorStore.loadFromGithubGist"
+        >Load</el-button
       >
-      <el-button @click="editorStore.clear">Clear</el-button>
+      <el-button title="Clear" @click="editorStore.clear">Clear</el-button>
     </template>
     <Editor />
   </el-dialog>

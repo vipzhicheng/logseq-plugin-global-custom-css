@@ -10,16 +10,17 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 export default defineConfig({
   base: "./",
   build: {
-    // sourcemap: false,
-    sourcemap: true,
+    sourcemap: false,
+    // sourcemap: true,
     target: "esnext",
-    // minify: "esbuild",
-    minify: false,
+    minify: "esbuild",
+    // minify: false,
     chunkSizeWarningLimit: 1024,
     rollupOptions: {
       output: {
         manualChunks: {
           logseq: ["@logseq/libs"],
+          codemirror: ["codemirror"],
         },
       },
     },
