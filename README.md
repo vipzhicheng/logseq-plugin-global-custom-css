@@ -1,5 +1,7 @@
 # Logseq Global Custom CSS
 
+[![Github All Releases](https://img.shields.io/github/downloads/vipzhicheng/logseq-plugin-global-custom-css/total.svg)](https://github.com/vipzhicheng/logseq-plugin-global-custom-css/releases)
+
 ![Screenshot](./screencast.gif)
 
 A plugin for Logseq themer. Logseq's custom.css give end user the ability to customize look and feel of Logseq over the theme layer, it's awesome but have some limits.
