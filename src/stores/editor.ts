@@ -47,12 +47,15 @@ export const useEditorStore = defineStore("editor", {
       if (this.cm as EditorFromTextArea) {
         const gist_id = logseq.settings.gist_id;
         const token = logseq.settings.personal_access_token;
+        const github_username = logseq.settings.github_username;
 
-        if (!gist_id || !token) {
-          alert("gist_id or personal access token not config");
+        if (!gist_id || !token || !github_username) {
+          alert(
+            "personal access token or github username or gist id not config"
+          );
         }
         await fetch(
-          `https://gist.github.com/vipzhicheng/${gist_id}/raw?${Math.random()}`,
+          `https://gist.github.com/${github_username}/${gist_id}/raw?${Math.random()}`,
           {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin

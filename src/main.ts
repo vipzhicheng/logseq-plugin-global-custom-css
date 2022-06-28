@@ -28,12 +28,20 @@ const defineSettings: SettingSchemaDesc[] = [
       'Apply Github Personal Access Token on https://github.com/settings/tokens, please only grant "Gist create" permisson for this token.',
   },
   {
+    key: "github_username",
+    type: "string",
+    default: "",
+    title: "Github Username",
+    description:
+      "Your Github username, e.g. https://gist.github.com/[username]/[gist_id]",
+  },
+  {
     key: "gist_id",
     type: "string",
     default: "",
     title: "Gist ID",
     description:
-      "You need to create a gist on Github first, and then find out the gist id, e.g. https://gist.github.com/[user]/[gist_id]",
+      "You need to create a gist on Github first, and then find out the gist id, e.g. https://gist.github.com/[username]/[gist_id]",
   },
 ];
 
